@@ -1,0 +1,270 @@
+/* config.pho contents
+<?php
+   $servername ="localhost";
+   $username="root";
+   $password = "";
+   $db = mysqli_connect($servername, $username, $password);
+
+   // Check connection
+   if (!$db) {
+       die("Connection failed: " . mysqli_connect_error());
+   }
+   mysqli_query($db,"DROP DATABASE [IF EXISTS] finalMultiMed;");
+   mysqli_query($db,"CREATE DATABASE finalMultiMed;");
+   mysqli_select_db($db,'finalMultiMed');
+   ?>
+*/
+/* database.sql contents
+CREATE TABLE IF NOT EXISTS admin (
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+) ENGINE = INNODB;
+
+CREATE TABLE IF NOT EXISTS datos (
+  name VARCHAR(255) NOT NULL,
+  age INT NOT NULL,
+  major VARCHAR(255) NOT NULL,
+  hours INT NOT NULL,
+  sex VARCHAR(255) NOT NULL,
+) ENGINE = INNODB;
+*/
+/* index.php contents
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Untitled 1</title>
+</head>
+
+
+<body style="height: 216px;">
+	<div class="container" style="width:400px;">
+	  <div class="row">
+	    <div class="col-sm">
+	      <div class="card bg-info">
+	        <div class="card-body">
+<form action="Register.php" method="post">
+
+
+<p>
+<label id="Admin" style="z-index: 1; position: absolute; top: 0px; left: 0px"></label>
+<label id="Administrador"></label>&nbsp;Administradores:</p>
+	<p>
+	<input onclick="location.href='register.php';" class="btn btn-primary"type="button" value="Register" /></p>
+
+<p><input onclick="location.href='login.php';"class="btn btn-primary" type="button" value="Modify" /></p>Estudiantes<label id="Label1">:<br />
+	</label><br />
+	<label id="Estudiantes"></label>
+		<input class="btn btn-primary" onclick="location.href='register.php';" type="button" value="Register" style="width: 137px" />
+
+
+	</form>
+
+
+</body>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</html>
+*/
+/*login.php contents
+<?php
+include("config.php");
+  if($_SERVER["REQUEST_METHOD"] == "POST") {
+      // username and password sent from form
+
+      $admin = mysqli_real_escape_string($db,$_POST['user']);
+      $pass = mysqli_real_escape_string($db,$_POST['passcode']);
+
+      $sql = "SELECT id FROM admin WHERE name = '{$admin}' and password = '{$pass}'";
+      $result = mysqli_query($db, $sql);
+      $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+      $active = $row["active"];
+
+      $count = mysqli_num_rows($result);
+     // $count = ($result);
+    // $count = mysqli_result($result);
+
+		 if($count == 1) {
+         session_register("userlog");
+         $_SESSION['login_user'] = $admin;
+
+         header("location: modify.php");
+      }
+      else {
+         $error = "Your Login Name or Password is invalid";
+      }
+   }
+?>
+<html>
+
+<head>
+<title>Log-In</title>
+</head>
+
+<body>
+<form action = "" method = "post">
+                  <label><br>Login to modify records<br><br>User&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  :</label><input type = "text" name = "userlog" class = "box"/><br /><br />
+                  <label>Password  :</label><input type = "password" name = "passcode" class = "box" /><br/><br />
+                  <input onclick = "location.href='modify.php';" value = " Submit "/><br />
+               </form>
+</body>
+
+</html>
+*/
+/* Register.php contents
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Register New Student</title>
+</head>
+
+<body>
+	<div class="container" style="width:400px;">
+		<div class="row">
+			<div class="col-sm">
+				<div class="card bg-info">
+					<div class="card-body">
+<form action="save.php" method="post">
+	<br />Register New Student<br />
+	<p>&nbsp;</p>
+	<p class="auto-style2">&nbsp;Name:
+	<input name="Name" style="width: 222px" type="text" /> <br /><br />&nbsp;User:
+	<input class="auto-style1" name="User" style="width: 217px" type="text" />
+	<br />
+	<br />Sexo:&nbsp; <select name="Sex" class="auto-style4">
+				<option value="1">Masculino</option>
+				<option value="2">Femenino</option>
+			</select>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Edad:<input name="Age" type="text" maxlength="2" style="width: 30px;"/></p>
+	<p class="auto-style2">Carrera:&nbsp; <select name="Carrera" >
+	<option value="1">Ing. en Videojuegos</option>
+	<option value="2">Medios Interactivos</option>
+	<option value="3">Psicologia</option>
+	<option value="4">Filosofia</option>
+	<option value="5">Biologia</option>
+	<option value="6">Medicina</option>
+	</select>&nbsp;&nbsp;</p>
+	<p class="auto-style2">&nbsp;&nbsp; Horas Totales:
+	<input name="Hours" type="text" style="width: 60px;" /><br />
+	<br />
+	Dias de Clase&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<br />
+	Lunes: <input name="Days" type="checkbox" value="Lunes" /> <br />
+	Martes:<input name="Days" type="checkbox" value ="Martes"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<br />
+	Miercoles:<input name="Days" type="checkbox" value="Miercoles" /> <br />
+	Jueves:<input name="Days" type="checkbox"  value="Jueves"/> <br />
+	Viernes:<input name="Days" type="checkbox" value="Viernes" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</br><input name="Ingresa" style="width: 142px" class="btn btn-primary" type="submit" value="Ingresa" /></p>
+	</form>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</body>
+	</html>
+*/
+/* save.php contents
+<?php
+include("config.php");
+$name =$_POST['Name'];
+if($_POST['Sex'] == '1') {
+  $Sex = 'Hombre';
+} else {
+  $Sex = "Mujer";
+}
+$Age = $_POST['Age'];
+switch($_POST['Carrera']) {
+  case "1":
+    $major = 'Ing. en Videjuegos';
+    break;
+  case "2":
+    $major = 'Medios Interactivos';
+    break;
+  case "3":
+    $major = 'Psicologia';
+    break;
+  case "4":
+    $major = 'Filosofia';
+    break;
+  case "5":
+    $major = 'Biologia';
+    break;
+  case "6":
+    $major = 'Medicina';
+
+}
+$hours =$_POST['Hours'];
+
+$query = "INSERT INTO datos (name, sex, age, major, hours) VALUES ('${name}','${Sex}',${Age}, '${major}', ${hours});";
+echo "Datos guardados correctamente.";
+mysqli_query($db,$query);
+?>
+/* modify.php contents
+<html>
+<head>
+    </head>
+    <body>
+      <script>
+        function deleter() {
+          location.href='delete.php?name='+ document.getElementById("term").value
+        }
+
+        function modifier() {
+          document.getElementById("msg").innerHTML ="Actualizado satisfactoriamente"
+        }
+      </script>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <div class="card bg-info">
+        <div class="card-body">
+  <form action="" method="post">
+  Search: <input type="text" id="term" name="term" />
+  <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+<?php
+
+include("config.php");
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $term = mysqli_real_escape_string($db , $_POST['term']);
+    $sql = "SELECT * FROM datos WHERE name LIKE '%".$term."%'";
+    $r_query = mysqli_query($db, $sql) or die(mysql_error());
+    printf("Numero de coincidencias ".mysqli_num_rows($r_query));
+    printf("<table class=table>");
+    while($row = mysqli_fetch_assoc($r_query)) {
+     printf("<tr>");
+     foreach($row as $cname => $cvalue) {
+       printf("<td><input type=text value=".$cvalue."></input></td>");
+     }
+
+     printf("</tr>");
+   }
+   mysqli_free_result($r_query);
+}
+?>
+</table>
+<p id="msg"></p>
+<button type="submit" id="modify" class="btn btn-primary" onclick="modifier()">Modify</button>
+<button type="submit" id="delete" class="btn btn-primary" onclick="deleter()">Delete</button>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</html>
+/* delete.php contents
+
+<?php
+  include("config.php");
+  $t = $_GET['name'];
+  mysqli_query($db,"DELETE FROM datos WHERE name='".$t."';");
+  header("Location: modify.php");
+  die();
+?>
+*/
+
+

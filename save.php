@@ -50,7 +50,7 @@ mysqli_query($db,$query);
 	<input name="Name" style="width: 222px" type="text" /> <br /><br /> User:
 	<input class="auto-style1" name="User" style="width: 217px" type="text" />
 	<br />
-	<br />Sexo:&nbsp; <select name="Sex" class="auto-style4">
+	<br />Sexo:  <select name="Sex" class="auto-style4">
 				<option value="1">Masculino</option>
 				<option value="2">Femenino</option>
 			</select>Edad:<input name="Age" type="text" maxlength="2" style="width: 30px;"/></p>
@@ -69,7 +69,7 @@ mysqli_query($db,$query);
 
 	<br />
 	Lunes: <input name="Days" type="checkbox" value="Lunes" /> <br />
-	Martes:<input name="Days" type="checkbox" value ="Martes"/>&nbsp;&nbsp;
+	Martes:<input name="Days" type="checkbox" value ="Martes"/>
 	<br />
 	Miercoles:<input name="Days" type="checkbox" value="Miercoles" /> <br />
 	Jueves:<input name="Days" type="checkbox"  value="Jueves"/> <br />
